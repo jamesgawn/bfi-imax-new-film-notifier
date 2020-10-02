@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from "axios";
+import * as odeonConfig from "./config.json";
 
-export class OdeonBearerTokenHelper {
+export class BearerTokenHelper {
   static async getAuthJwt() : Promise<string> {
     const page = await this.getPageContainingAuthJwt();
     const line = this.findLineContainingJwt(page);
@@ -11,7 +12,11 @@ export class OdeonBearerTokenHelper {
     // Get the page, if not throw an error
     let response : AxiosResponse<string>;
     try {
-      response = await axios.get<string>("https://beta.odeon.co.uk/cinemas/bfi-imax/#");
+      response = await axios.get<string>("https://beta.odeon.co.uk/cinemas/bfi-imax/#", {
+        headers: {
+          ...odeonConfig.headers
+        }
+      });
     } catch (err) {
       throw new Error("Unable to retrieve page contents from https://beta.odeon.co.uk/cinemas/bfi-imax/#. " + err.message);
     }

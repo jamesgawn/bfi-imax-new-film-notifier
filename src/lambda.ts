@@ -1,7 +1,7 @@
-import {OdeonBearerTokenHelper} from "./lib/OdeonApi/OdeonBearerTokenHelper";
+import {BearerTokenHelper} from "./lib/OdeonApi/BearerTokenHelper";
 
 export const handler = async ()
     : Promise<string> => {
-  await OdeonBearerTokenHelper.getAuthJwt();
+  await BearerTokenHelper.getAuthJwt();
   return "Hello World";
 };
