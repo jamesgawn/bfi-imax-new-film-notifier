@@ -1,10 +1,8 @@
 import {handler} from "./lambda";
-import {Context} from "aws-lambda";
 
 describe("lambda.ts", () => {
   test("handler", async () => {
-    const contextMock = {} as Context;
-    const result = await handler({}, contextMock);
+    const result = await handler();
     expect(result).toBe("Hello World");
   });
 });
