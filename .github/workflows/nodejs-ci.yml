@@ -7,7 +7,7 @@ on:
 
 jobs:
   unit-test:
-    name: Unit Test Check (Node ${{ matrix.node-version }})
+    name: Unit Test Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
