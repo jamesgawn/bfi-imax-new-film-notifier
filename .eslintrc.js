@@ -4,21 +4,24 @@ module.exports = {
     es2021: true
   },
   extends: [
-    'google'
+    "google"
   ],
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module',
+    sourceType: "module",
     ecmaFeatures: {
       impliedStrict: true
     }
   },
   plugins: [
-    '@typescript-eslint'
+    "@typescript-eslint"
   ],
   rules: {
-    'require-jsdoc': 'off',
-    'comma-dangle': 'off'
+    "require-jsdoc": "off",
+    "comma-dangle": "off",
+    "quotes": ["error", "double", "avoid-escape"],
+    "max-len": ["error", 130],
+    "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
   },
 };

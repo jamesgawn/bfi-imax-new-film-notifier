@@ -4,4 +4,4 @@ node_modules
 .coverage
 terraform.tfvars
 .terraform
-dist.zip
+dist-lambda.zip

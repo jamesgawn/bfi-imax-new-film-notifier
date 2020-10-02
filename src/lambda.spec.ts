@@ -1,11 +1,10 @@
-import {handler} from './lambda';
-import {Context} from 'aws-lambda';
+import {handler} from "./lambda";
+import {Context} from "aws-lambda";
 
-describe('lambda.ts', () => {
-  test('handler', () => {
-    const callbackMock = jest.fn();
+describe("lambda.ts", () => {
+  test("handler", async () => {
     const contextMock = {} as Context;
-    handler({}, contextMock, callbackMock);
-    expect(callbackMock).toBeCalledWith(null, 'Hello World');
+    const result = await handler({}, contextMock);
+    expect(result).toBe("Hello World");
   });
 });

@@ -1,6 +1,7 @@
-import {Callback, Context} from 'aws-lambda';
+import {OdeonBearerTokenHelper} from "./lib/OdeonApi/OdeonBearerTokenHelper";
 
-export const handler = (event : any, context : Context, callback : Callback)
-    : void => {
-  callback(null, 'Hello World');
+export const handler = async ()
+    : Promise<string> => {
+  await OdeonBearerTokenHelper.getAuthJwt();
+  return "Hello World";
 };

@@ -59,3 +59,8 @@ resource "aws_iam_role" "lambda_execution_role" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_basis_role_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  role = aws_iam_role.lambda_execution_role.name
+}
