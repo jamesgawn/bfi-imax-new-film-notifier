@@ -9,16 +9,13 @@ jobs:
   unit-test:
     name: Unit Test Check (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: 12.x
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set-up node ${{ matrix.node-version }}
+      - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
