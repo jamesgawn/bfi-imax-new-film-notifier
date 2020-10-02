@@ -1,6 +1,7 @@
-/.idea/
+.idea/
 dist
 node_modules
-/.coverage
+.coverage
 terraform.tfvars
 .terraform
+dist.zip
