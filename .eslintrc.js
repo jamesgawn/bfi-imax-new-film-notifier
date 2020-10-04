@@ -21,7 +21,7 @@ module.exports = {
     "require-jsdoc": "off",
     "comma-dangle": "off",
     "quotes": ["error", "double", "avoid-escape"],
-    "max-len": ["error", 150],
+    "max-len": ["error", 170],
     "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
   },
 };

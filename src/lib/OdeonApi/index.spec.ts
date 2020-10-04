@@ -1,6 +1,7 @@
 import {OdeonApi} from "./index";
 import axios from "axios";
 import {BearerTokenHelper} from "./BearerTokenHelper";
+import {FriendlyError} from "../FriendlyError";
 
 jest.mock("axios");
 const mockedAxios: jest.Mocked<typeof axios> = axios as any;
@@ -11,22 +12,43 @@ describe("OdeonApi", () => {
   beforeEach(() => {
     mockedBearerTokenHelper.getAuthJwt.mockResolvedValue("supertoken");
     mockedAxios.get.mockReset();
-    mockedAxios.get.mockResolvedValue({
-      data: "piles of stuff"
-    });
   });
   describe("getAllFilmsForCinema", () => {
     test("should return film data for cinema when receiving a valid response", async () => {
+      mockedAxios.get.mockResolvedValue({
+        data: "piles of stuff"
+      });
       const oapi = new OdeonApi();
       const filmData = await oapi.getAllFilmsForCinema(150);
       expect(filmData).toBe("piles of stuff");
+      expect(mockedAxios.get).toBeCalledWith("https://vwc.odeon.co.uk/WSVistaWebClient/ocapi/v1/browsing/master-data/films?siteIds=150", {
+        headers: {
+          "Authorization": "Bearer supertoken",
+          "User-Agent": OdeonApi.userAgent
+        }
+      });
     });
     test("should only attempt to retrieve an authentication token once if multiple calls are made", async () => {
+      mockedAxios.get.mockResolvedValue({
+        data: "piles of stuff"
+      });
       const oapi = new OdeonApi();
       await oapi.getAllFilmsForCinema(150);
       await oapi.getAllFilmsForCinema(150);
       expect(mockedBearerTokenHelper.getAuthJwt).toBeCalledTimes(1);
     });
-    // TODO: Add negative scenario coverage.
+    test("should throw an error if the API failed to provide a valid response", async () => {
+      const mockedError = new Error("Weird");
+      mockedAxios.get.mockRejectedValue(mockedError);
+      let error : FriendlyError = new FriendlyError("nope");
+      try {
+        const oapi = new OdeonApi();
+        await oapi.getAllFilmsForCinema(149);
+      } catch (err) {
+        error = err;
+      }
+      expect(error.message).toBe("Unable to retrieve films for cinema site 149");
+      expect(error.err).toBe(mockedError);
+    });
   });
 });

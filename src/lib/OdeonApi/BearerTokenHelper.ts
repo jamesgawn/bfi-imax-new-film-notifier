@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
-import * as odeonConfig from "./config.json";
+import {FriendlyError} from "../FriendlyError";
+import {OdeonApi} from "./index";
 
 export class BearerTokenHelper {
   static async getAuthJwt() : Promise<string> {
@@ -14,17 +15,17 @@ export class BearerTokenHelper {
     try {
       response = await axios.get<string>("https://beta.odeon.co.uk/cinemas/bfi-imax/#", {
         headers: {
-          ...odeonConfig.headers
+          "User-Agent": OdeonApi.userAgent
         }
       });
     } catch (err) {
-      throw new Error("Unable to retrieve page contents from https://beta.odeon.co.uk/cinemas/bfi-imax/#. " + err.message);
+      throw new FriendlyError("Unable to retrieve page contents from https://beta.odeon.co.uk/cinemas/bfi-imax/#.", err);
     }
 
     if (response.data) {
       return response.data;
     } else {
-      throw new Error("No page data returned from https://beta.odeon.co.uk/cinemas/bfi-imax/#.");
+      throw new FriendlyError("No page data returned from https://beta.odeon.co.uk/cinemas/bfi-imax/#.");
     }
   }
 
@@ -42,7 +43,7 @@ export class BearerTokenHelper {
     if (lineWithAuth) {
       return lineWithAuth;
     } else {
-      throw new Error("Unable to find authToken in page");
+      throw new FriendlyError("Unable to find authToken in page");
     }
   }
 
@@ -51,7 +52,7 @@ export class BearerTokenHelper {
     if (match && match[1]) {
       return match[1];
     } else {
-      throw new Error("Unable to find JWT in line");
+      throw new FriendlyError("Unable to find JWT in line");
     }
   }
 }
