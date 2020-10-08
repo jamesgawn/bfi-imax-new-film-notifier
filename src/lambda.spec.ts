@@ -2,6 +2,7 @@ import {handler} from "./lambda";
 import {SimpleShowing} from "./service/domain/SimpleShowing";
 import {Film} from "./lib/OdeonApi/odeonTypes";
 import {add} from "date-fns";
+import {FriendlyError} from "./lib/FriendlyError";
 
 const mockGetNextShowingByFilmForCinema = jest.fn();
 jest.mock("./service/CinemaInfoService", () => ({
@@ -17,6 +18,12 @@ jest.mock("./lib/DynamoDBHelper", () => ({
     putRecord: mockPutRecord
   }))
 }));
+const mockPost = jest.fn();
+jest.mock("twitter-lite", () => {
+  return jest.fn().mockImplementation(() => ({
+    post: mockPost
+  }));
+});
 
 describe("lambda.ts", () => {
   const film1 = {
@@ -33,18 +40,47 @@ describe("lambda.ts", () => {
   } as Film;
   const showing1 = new SimpleShowing("film1", film1, add(new Date(), {days: 1}));
   const showing2 = new SimpleShowing("film2", film2, add(new Date(), {days: 2}));
-  test("handler", async () => {
+  beforeEach(() => {
+    process.env.twitter_enabled = "true";
+    process.env.twitter_consumer_key = "consumer_key";
+    process.env.twitter_consumer_secret = "consumer_secret";
+    process.env.twitter_access_token_key = "access_token_key";
+    process.env.twitter_access_token_secret = "access_token_secret";
     mockGetNextShowingByFilmForCinema.mockResolvedValue(new Map<string, SimpleShowing>([
       ["film1", showing1],
       ["film2", showing2]
     ]));
     mockGetRecordById.mockResolvedValueOnce(film1);
     mockGetRecordById.mockResolvedValueOnce(undefined);
-    const result = await handler();
+  });
+  test("should successfully identify new films process them", async () => {
+    await handler();
     expect(mockGetRecordById).toHaveBeenNthCalledWith(1, "film1");
     expect(mockGetRecordById).toHaveBeenNthCalledWith(2, "film2");
     expect(mockPutRecord).toHaveBeenCalledTimes(1);
     expect(mockPutRecord).toBeCalledWith(showing2.toRecord());
-    console.log(result);
+    expect(mockPost).toBeCalledWith("statuses/update", {
+      status: `${showing2.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
+    });
+    expect(mockPost).toHaveBeenCalledTimes(1);
+  });
+  test("should successfully identify new films process but not send tweet if disabled", async () => {
+    process.env.twitter_enabled = "false";
+    await handler();
+    expect(mockGetRecordById).toHaveBeenNthCalledWith(1, "film1");
+    expect(mockGetRecordById).toHaveBeenNthCalledWith(2, "film2");
+    expect(mockPutRecord).toHaveBeenCalledTimes(1);
+    expect(mockPutRecord).toBeCalledWith(showing2.toRecord());
+    expect(mockPost).toHaveBeenCalledTimes(0);
+  });
+  test("should throw error if Twitter credentials are unavailable", async () => {
+    delete process.env.twitter_access_token_secret;
+    let error = new FriendlyError("blarg");
+    try {
+      await handler();
+    } catch (err) {
+      error = err;
+    }
+    expect(error.message).toBe("Twitter credentials unavailable, unable to proceed.");
   });
 });

@@ -8,6 +8,27 @@ variable "region" {
   default = "eu-west-2"
 }
 
+variable "twitter_consumer_key" {
+  type = string
+}
+
+variable "twitter_consumer_secret" {
+  type = string
+}
+
+variable "twitter_access_token_key" {
+  type = string
+}
+
+variable "twitter_access_token_secret" {
+  type = string
+}
+
+variable "twitter_enabled" {
+  type = bool
+  default = false
+}
+
 provider "aws" {
   region = var.region
   profile = var.profile
@@ -34,6 +55,16 @@ resource "aws_lambda_function" "lambda" {
   runtime = "nodejs12.x"
   filename = "dist-lambda.zip"
   source_code_hash = data.archive_file.lambda_code.output_sha
+
+  environment {
+    variables = {
+      twitter_enabled = var.twitter_enabled
+      twitter_consumer_key = var.twitter_consumer_key
+      twitter_consumer_secret = var.twitter_consumer_secret
+      twitter_access_token_key = var.twitter_access_token_key
+      twitter_access_token_secret = var.twitter_access_token_secret
+    }
+  }
 
   role = aws_iam_role.lambda_execution_role.arn
 }
