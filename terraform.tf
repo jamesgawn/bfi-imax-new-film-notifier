@@ -62,3 +62,39 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_basis_role_attachmen
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role = aws_iam_role.lambda_execution_role.name
 }
+
+resource "aws_iam_policy" "bfi_film_dynamodb_table_policy" {
+  name = "bfi_film_lambda_policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:GetItem",
+              "dynamodb:UpdateItem"
+          ],
+          "Resource": "arn:aws:dynamodb:*:*:table/bfi-film-showings"
+      }
+  ]
+}
+  EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_dynamodb_access_attachment" {
+  policy_arn = aws_iam_policy.bfi_film_dynamodb_table_policy.arn
+  role = aws_iam_role.lambda_execution_role.name
+}
+
+resource "aws_dynamodb_table" "film_showing_records" {
+  name = "bfi-film-showings"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+}
