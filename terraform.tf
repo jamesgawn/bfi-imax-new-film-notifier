@@ -29,6 +29,11 @@ variable "twitter_enabled" {
   default = false
 }
 
+variable "film_look_forward_days" {
+  type = number
+  default = 30
+}
+
 provider "aws" {
   region = var.region
   profile = var.profile
@@ -63,6 +68,7 @@ resource "aws_lambda_function" "lambda" {
       twitter_consumer_secret = var.twitter_consumer_secret
       twitter_access_token_key = var.twitter_access_token_key
       twitter_access_token_secret = var.twitter_access_token_secret
+      film_look_forward_days = var.film_look_forward_days
     }
   }
 

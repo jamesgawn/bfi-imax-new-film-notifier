@@ -9,7 +9,7 @@ export const handler = async ()
   const cis = new CinemaInfoService();
   const dbh = new DynamoDBHelper("bfi-film-showings");
   if (!process.env.twitter_consumer_key || !process.env.twitter_consumer_secret || !process.env.twitter_access_token_key || !process.env.twitter_access_token_secret) {
-    throw new FriendlyError("Twitter credentials unavailable, unable to proceed.");
+    throw new FriendlyError("Twitter credentials not set in env vars, unable to proceed.");
   }
   const twitter = new Twitter({
     consumer_key: process.env.twitter_consumer_key,
@@ -17,7 +17,11 @@ export const handler = async ()
     access_token_key: process.env.twitter_access_token_key,
     access_token_secret: process.env.twitter_access_token_secret
   });
-  const upcomingFilms = await cis.getNextShowingByFilmForCinema(150, new Date(), 2);
+  let lookForwardDays = 2;
+  if (process.env.film_look_forward_days) {
+    lookForwardDays = Number.parseInt(process.env.film_look_forward_days);
+  }
+  const upcomingFilms = await cis.getNextShowingByFilmForCinema(150, new Date(), lookForwardDays);
   for (const [filmId, showing] of upcomingFilms) {
     const persistedFilm = await dbh.getRecordById<FilmRecord>(filmId);
     // If not previously seen, then do things

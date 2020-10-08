@@ -42,6 +42,7 @@ describe("lambda.ts", () => {
   const showing2 = new SimpleShowing("film2", film2, add(new Date(), {days: 2}));
   beforeEach(() => {
     process.env.twitter_enabled = "true";
+    delete process.env.film_look_forward_days;
     process.env.twitter_consumer_key = "consumer_key";
     process.env.twitter_consumer_secret = "consumer_secret";
     process.env.twitter_access_token_key = "access_token_key";
@@ -53,8 +54,9 @@ describe("lambda.ts", () => {
     mockGetRecordById.mockResolvedValueOnce(film1);
     mockGetRecordById.mockResolvedValueOnce(undefined);
   });
-  test("should successfully identify new films process them", async () => {
+  test("should successfully identify new films and process them", async () => {
     await handler();
+    expect(mockGetNextShowingByFilmForCinema).toBeCalledWith(150, expect.any(Date), 2);
     expect(mockGetRecordById).toHaveBeenNthCalledWith(1, "film1");
     expect(mockGetRecordById).toHaveBeenNthCalledWith(2, "film2");
     expect(mockPutRecord).toHaveBeenCalledTimes(1);
@@ -63,6 +65,11 @@ describe("lambda.ts", () => {
       status: `${showing2.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
     });
     expect(mockPost).toHaveBeenCalledTimes(1);
+  });
+  test("should successfully identify new films and process them for a customised number of days", async () => {
+    process.env.film_look_forward_days = "1";
+    await handler();
+    expect(mockGetNextShowingByFilmForCinema).toBeCalledWith(150, expect.any(Date), 1);
   });
   test("should successfully identify new films process but not send tweet if disabled", async () => {
     process.env.twitter_enabled = "false";
@@ -81,6 +88,6 @@ describe("lambda.ts", () => {
     } catch (err) {
       error = err;
     }
-    expect(error.message).toBe("Twitter credentials unavailable, unable to proceed.");
+    expect(error.message).toBe("Twitter credentials not set in env vars, unable to proceed.");
   });
 });
