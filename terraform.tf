@@ -38,8 +38,6 @@ resource "aws_lambda_function" "lambda" {
   role = aws_iam_role.lambda_execution_role.arn
 }
 
-# IAM role which dictates what other AWS services the Lambda function
-# may access.
 resource "aws_iam_role" "lambda_execution_role" {
   name = "bfi_imax_new_film_notifier_execution_role"
 
