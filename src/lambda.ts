@@ -1,7 +1,7 @@
-import {BearerTokenHelper} from "./lib/OdeonApi/BearerTokenHelper";
+import {CinemaInfoService} from "./service/CinemaInfoService";
 
 export const handler = async ()
     : Promise<string> => {
-  await BearerTokenHelper.getAuthJwt();
+  new CinemaInfoService();
   return "Hello World";
 };
