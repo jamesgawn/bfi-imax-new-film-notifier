@@ -9,6 +9,7 @@
     "test": "jest",
     "coverage": "jest --collectCoverage",
     "lint": "eslint src/**/*.ts",
+    "tcl": "npm run test && npm run coverage && npm run lint",
     "deploy": "npm run build && terraform apply",
     "undeploy": "terraform destroy"
   },
@@ -23,7 +24,8 @@
   },
   "homepage": "https://github.com/jamesgawn/bfi-imax-new-film-notifier#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "date-fns": "^2.16.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.3.0",
