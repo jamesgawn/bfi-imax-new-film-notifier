@@ -14,9 +14,9 @@ export class CinemaInfoService {
     return data.reduce<Map<string, SimpleShowing>>((nextShowings, currentShowtimes) => {
       const showings = currentShowtimes.showtimes.map((showtime) => SimpleShowing.adaptFromDto(showtime, currentShowtimes.relatedData.films));
       for (const showing of showings) {
-        const existingShowing = nextShowings.get(showing.filmId);
+        const existingShowing = nextShowings.get(showing.film.id);
         if (!existingShowing || (existingShowing && showing.date < existingShowing.date)) {
-          nextShowings.set(showing.filmId, showing);
+          nextShowings.set(showing.film.id, showing);
         }
       }
       return nextShowings;

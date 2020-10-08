@@ -28,8 +28,7 @@ describe("SimpleShowing", () => {
     test("should create object from Showtimes object", () => {
       const showing = SimpleShowing.adaptFromDto(testShowtime, testFilms);
       expect(showing.id).toBe(testShowtime.id);
-      expect(showing.filmId).toBe(testShowtime.filmId);
-      expect(showing.filmName).toBe(testFilms[0].title.text);
+      expect(showing.film).toBe(testFilms[0]);
       expect(showing.date).toStrictEqual(parse(testShowtime.schedule.businessDate, "yyyy-MM-dd", new Date()));
     });
     test("should throw error if unable to find film name for film in Showtimes object", () => {

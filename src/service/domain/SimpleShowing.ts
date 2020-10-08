@@ -4,13 +4,11 @@ import {FriendlyError} from "../../lib/FriendlyError";
 
 export class SimpleShowing {
   id: string;
-  filmId: string;
-  filmName: string;
+  film: Film;
   date: Date;
-  constructor(id: string, filmId: string, filmName: string, date: Date) {
+  constructor(id: string, film: Film, date: Date) {
     this.id = id;
-    this.filmId = filmId;
-    this.filmName = filmName;
+    this.film = film;
     this.date = date;
   }
 
@@ -18,6 +16,6 @@ export class SimpleShowing {
     const date = parse(showtime.schedule.businessDate, "yyyy-MM-dd", new Date());
     const film = films.find((film) => film.id == showtime.filmId);
     if (!film) throw new FriendlyError(`Unable to find matching film name for ${showtime.filmId} in schedule`);
-    return new SimpleShowing(showtime.id, showtime.filmId, film.title.text, date);
+    return new SimpleShowing(showtime.id, film, date);
   }
 }

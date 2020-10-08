@@ -1,6 +1,7 @@
 import {CinemaInfoService} from "./CinemaInfoService";
 import {parse} from "date-fns";
 import {SimpleShowing} from "./domain/SimpleShowing";
+import {Film} from "../lib/OdeonApi/odeonTypes";
 
 const mockGetShowtimesForCinema = jest.fn();
 jest.mock("../lib/OdeonApi", () => ({
@@ -11,19 +12,21 @@ jest.mock("../lib/OdeonApi", () => ({
 
 describe("CinemaInfoService.ts", () => {
   let cis: CinemaInfoService;
-  const films = [
-    {
-      "id": "filmid1",
-      "title": {
-        "text": "Film 1",
-      }
-    },
-    {
-      "id": "filmid2",
-      "title": {
-        "text": "Film 2",
-      }
+  const film1 = {
+    "id": "filmid1",
+    "title": {
+      "text": "Film 1",
     }
+  } as Film;
+  const film2 = {
+    "id": "filmid2",
+    "title": {
+      "text": "Film 2",
+    }
+  } as Film;
+  const films = [
+    film1,
+    film2
   ];
   const emptyShowtimes = {
     showtimes: [],
@@ -61,7 +64,7 @@ describe("CinemaInfoService.ts", () => {
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
       expect(result).toStrictEqual(new Map([
-        ["filmid1", new SimpleShowing("123-123", "filmid1", "Film 1", startDatePlusOne)]
+        ["filmid1", new SimpleShowing("123-123", film1, startDatePlusOne)]
       ]));
     });
     test("should return first showing for film on multiple future dates", async ()=> {
@@ -98,7 +101,7 @@ describe("CinemaInfoService.ts", () => {
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
       expect(result).toStrictEqual(new Map([
-        ["filmid1", new SimpleShowing("123-123", "filmid1", "Film 1", startDatePlusOne)]
+        ["filmid1", new SimpleShowing("123-123", film1, startDatePlusOne)]
       ]));
     });
     test("should return should return the first showing for multiple films over multiple future dates", async ()=> {
@@ -154,8 +157,8 @@ describe("CinemaInfoService.ts", () => {
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
       expect(result).toStrictEqual(new Map([
-        ["filmid1", new SimpleShowing("1-1", "filmid1", "Film 1", startDate)],
-        ["filmid2", new SimpleShowing("2-1", "filmid2", "Film 2", startDatePlusOne)]
+        ["filmid1", new SimpleShowing("1-1", film1, startDate)],
+        ["filmid2", new SimpleShowing("2-1", film2, startDatePlusOne)]
       ]));
     });
   });
