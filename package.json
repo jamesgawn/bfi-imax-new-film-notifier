@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/jamesgawn/bfi-imax-new-film-notifier#readme",
   "dependencies": {
+    "aws-sdk": "^2.769.0",
     "axios": "^0.19.2",
     "date-fns": "^2.16.1"
   },
