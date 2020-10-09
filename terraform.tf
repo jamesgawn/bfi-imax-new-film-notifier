@@ -27,15 +27,24 @@ variable "twitter_access_token_secret" {
 variable "twitter_enabled" {
   type = bool
   default = false
+  description = "Is automatic posting to twitter enabled?"
 }
 
 variable "film_look_forward_days" {
   type = number
   default = 7
+  description = "The number of days ahead to look for new films"
+}
+
+variable "frequency" {
+  type = number
+  default = 15
+  description = "The frequency in minutes by which to check for new films."
 }
 
 variable "notification_sns_queue_name" {
   type = string
+  description = "The name of the SNS queue to send ok/error alarms if the lambda stops working."
 }
 
 provider "aws" {
@@ -145,7 +154,7 @@ resource "aws_dynamodb_table" "film_showing_records" {
 
 resource "aws_cloudwatch_event_rule" "scheduled_event_rule" {
   name = "bfi-imax-new-film-notifier-trigger-rule"
-  schedule_expression = "rate(15 minutes)"
+  schedule_expression = "rate(${var.frequency} minutes)"
   description = "A rule to regularly trigger the bfi imax new film notifier lambda."
 }
 
