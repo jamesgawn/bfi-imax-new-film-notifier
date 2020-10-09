@@ -1,7 +1,7 @@
 import {handler} from "./lambda";
 import {SimpleShowing} from "./service/domain/SimpleShowing";
 import {Film} from "./lib/OdeonApi/odeonTypes";
-import {add} from "date-fns";
+import {add, format} from "date-fns";
 import {FriendlyError} from "./lib/FriendlyError";
 
 const mockGetNextShowingByFilmForCinema = jest.fn();
@@ -64,7 +64,8 @@ describe("lambda.ts", () => {
     expect(mockPutRecord).toHaveBeenCalledTimes(1);
     expect(mockPutRecord).toBeCalledWith(showing2.toRecord());
     expect(mockPost).toBeCalledWith("statuses/update", {
-      status: `${showing2.film.title} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
+      status: `${showing2.film.title} starts showing on ${format(showing2.date, "do MMM")}!
+      For booking see: https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
     });
     expect(mockPost).toHaveBeenCalledTimes(1);
   });

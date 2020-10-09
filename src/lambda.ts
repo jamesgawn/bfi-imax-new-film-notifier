@@ -5,6 +5,7 @@ import Twitter from "twitter-lite";
 import {FriendlyError} from "./lib/FriendlyError";
 import {LoggerHelper} from "./lib/LoggerHelper";
 import {APIGatewayProxyHandlerV2} from "aws-lambda";
+import {format} from "date-fns";
 
 export const handler : APIGatewayProxyHandlerV2<void> = async (event, context)
     : Promise<void> => {
@@ -40,7 +41,8 @@ export const handler : APIGatewayProxyHandlerV2<void> = async (event, context)
       await dbh.putRecord<FilmRecord>(showing.toRecord());
       // Tweet to let people know it's available for booking
       // eslint-disable-next-line max-len
-      const newFilmTweet = `${showing.film.title} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
+      const newFilmTweet = `${showing.film.title} starts showing on ${format(showing.date, "do MMM")}!
+      For booking see: https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
       if (process.env.twitter_enabled == "true") {
         log.info("Tweeting new film alert", {
           tweet: newFilmTweet
