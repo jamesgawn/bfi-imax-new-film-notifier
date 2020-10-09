@@ -7,8 +7,7 @@ import {LoggerHelper} from "./lib/LoggerHelper";
 import {APIGatewayProxyHandlerV2} from "aws-lambda";
 import {format} from "date-fns";
 
-export const handler : APIGatewayProxyHandlerV2<void> = async (event, context)
-    : Promise<void> => {
+export const handler : APIGatewayProxyHandlerV2<void> = async (event, context) => {
   LoggerHelper.additionalFields = {
     awsRequestId: context.awsRequestId
   };
