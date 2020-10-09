@@ -17,7 +17,11 @@
     "type": "git",
     "url": "git+https://github.com/jamesgawn/bfi-imax-new-film-notifier.git"
   },
-  "author": "James Gawn",
+  "author": {
+    "name": "James Gawn",
+    "email": "james@gawn.uk",
+    "url": "https://gawn.uk"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jamesgawn/bfi-imax-new-film-notifier/issues"
