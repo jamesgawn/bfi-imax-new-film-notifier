@@ -4,7 +4,6 @@
 A serverless solution to find out if new films are available for booking at the BFI IMAX.
 
 You can see the feed at on twitter [@bfiimaxnewfilms](https://twitter.com/bfiimaxnewfilms).
-
 ## Guide
 
 This project has the following built in npm commands:
