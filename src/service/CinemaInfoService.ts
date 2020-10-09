@@ -20,7 +20,7 @@ export class CinemaInfoService extends Base {
     const newOrUpdatedShowings = data.reduce<Map<string, SimpleShowing>>((nextShowings, currentShowtimes) => {
       const showings = currentShowtimes.showtimes.map((showtime) => SimpleShowing.fromDto(showtime, currentShowtimes.relatedData.films));
       for (const showing of showings) {
-        this.log.info(`Finding existing showing ${showing.film.id}`);
+        this.log.info(`Finding existing showing for ${showing.film.id}`);
         const existingShowing = nextShowings.get(showing.film.id);
         if (!existingShowing || (existingShowing && showing.date < existingShowing.date)) {
           this.log.info(`Adding new film or one with an earlier showing ${showing.film.id}`);

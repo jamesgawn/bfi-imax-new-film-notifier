@@ -12,9 +12,9 @@ export class LoggerHelper {
   };
 
   info(msg: string, data?: object) {
-    this.log.info({
+    this.log.info(msg, {
       data: data,
-    }, msg);
+    });
   }
 
   error(msg: string, err?: Error, data?: any) {

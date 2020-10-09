@@ -33,9 +33,9 @@ describe("LoggerHelper", () => {
         pies: "pork"
       };
       log.info("test info message", data);
-      expect(infoMock).toBeCalledWith({
+      expect(infoMock).toBeCalledWith( "test info message", {
         data: data
-      }, "test info message");
+      });
     });
   });
   describe("error", () => {
