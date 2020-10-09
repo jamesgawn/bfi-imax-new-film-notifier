@@ -31,7 +31,7 @@ variable "twitter_enabled" {
 
 variable "film_look_forward_days" {
   type = number
-  default = 30
+  default = 7
 }
 
 provider "aws" {
@@ -60,6 +60,8 @@ resource "aws_lambda_function" "lambda" {
   runtime = "nodejs12.x"
   filename = "dist-lambda.zip"
   source_code_hash = data.archive_file.lambda_code.output_sha
+  memory_size = 192
+  timeout = 10
 
   environment {
     variables = {
