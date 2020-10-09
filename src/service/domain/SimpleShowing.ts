@@ -5,11 +5,18 @@ import {FilmRecord} from "../../domain/FilmRecord";
 
 export class SimpleShowing {
   id: string;
-  film: Film;
+  film: {
+    id: string,
+    title: string
+  };
+
   date: Date;
-  constructor(id: string, film: Film, date: Date) {
+  constructor(id: string, filmId: string, filmtitle: string, date: Date) {
     this.id = id;
-    this.film = film;
+    this.film = {
+      id: filmId,
+      title: filmtitle
+    };
     this.date = date;
   }
 
@@ -17,10 +24,10 @@ export class SimpleShowing {
     const date = parse(showtime.schedule.businessDate, "yyyy-MM-dd", new Date());
     const film = films.find((film) => film.id == showtime.filmId);
     if (!film) throw new FriendlyError(`Unable to find matching film name for ${showtime.filmId} in schedule`);
-    return new SimpleShowing(showtime.id, film, date);
+    return new SimpleShowing(showtime.id, film.id, film.title.text, date);
   }
 
   toRecord() : FilmRecord {
-    return new FilmRecord(this.id, this.film.title.text, this.date.getTime());
+    return new FilmRecord(this.film.id, this.film.title, this.date.getTime());
   }
 }

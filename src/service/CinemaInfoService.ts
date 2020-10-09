@@ -22,12 +22,8 @@ export class CinemaInfoService extends Base {
       for (const showing of showings) {
         this.log.info(`Finding existing showing ${showing.film.id}`);
         const existingShowing = nextShowings.get(showing.film.id);
-        if (!existingShowing) {
-          this.log.info(`Adding new film ${showing.film.id}`);
-          nextShowings.set(showing.film.id, showing);
-        }
-        if (existingShowing && showing.date < existingShowing.date) {
-          this.log.info(`Adding film ${showing.film.id} with earlier showing`);
+        if (!existingShowing || (existingShowing && showing.date < existingShowing.date)) {
+          this.log.info(`Adding new film or one with an earlier showing ${showing.film.id}`);
           nextShowings.set(showing.film.id, showing);
         }
       }

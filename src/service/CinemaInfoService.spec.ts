@@ -64,7 +64,7 @@ describe("CinemaInfoService.ts", () => {
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
       expect(result).toStrictEqual(new Map([
-        ["filmid1", new SimpleShowing("123-123", film1, startDatePlusOne)]
+        ["filmid1", new SimpleShowing("123-123", film1.id, film1.title.text, startDatePlusOne)]
       ]));
     });
     test("should return first showing for film on multiple future dates", async ()=> {
@@ -101,7 +101,7 @@ describe("CinemaInfoService.ts", () => {
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
       expect(result).toStrictEqual(new Map([
-        ["filmid1", new SimpleShowing("123-123", film1, startDatePlusOne)]
+        ["filmid1", new SimpleShowing("123-123", film1.id, film1.title.text, startDatePlusOne)]
       ]));
     });
     test("should return should return the first showing for multiple films over multiple future dates", async ()=> {
@@ -157,8 +157,8 @@ describe("CinemaInfoService.ts", () => {
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
       expect(result).toStrictEqual(new Map([
-        ["filmid1", new SimpleShowing("1-1", film1, startDate)],
-        ["filmid2", new SimpleShowing("2-1", film2, startDatePlusOne)]
+        ["filmid1", new SimpleShowing("1-1", film1.id, film1.title.text, startDate)],
+        ["filmid2", new SimpleShowing("2-1", film2.id, film2.title.text, startDatePlusOne)]
       ]));
     });
   });

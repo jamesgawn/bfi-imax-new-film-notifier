@@ -38,8 +38,8 @@ describe("lambda.ts", () => {
       "text": "Film 2",
     }
   } as Film;
-  const showing1 = new SimpleShowing("film1", film1, add(new Date(), {days: 1}));
-  const showing2 = new SimpleShowing("film2", film2, add(new Date(), {days: 2}));
+  const showing1 = new SimpleShowing("film1", film1.id, film1.title.text, add(new Date(), {days: 1}));
+  const showing2 = new SimpleShowing("film2", film2.id, film2.title.text, add(new Date(), {days: 2}));
   beforeEach(() => {
     process.env.twitter_enabled = "true";
     delete process.env.film_look_forward_days;
@@ -62,7 +62,7 @@ describe("lambda.ts", () => {
     expect(mockPutRecord).toHaveBeenCalledTimes(1);
     expect(mockPutRecord).toBeCalledWith(showing2.toRecord());
     expect(mockPost).toBeCalledWith("statuses/update", {
-      status: `${showing2.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
+      status: `${showing2.film.title} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
     });
     expect(mockPost).toHaveBeenCalledTimes(1);
   });

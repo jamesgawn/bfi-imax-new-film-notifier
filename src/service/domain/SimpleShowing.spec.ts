@@ -28,7 +28,8 @@ describe("SimpleShowing", () => {
     test("should create object from Showtimes object", () => {
       const showing = SimpleShowing.fromDto(testShowtime, testFilms);
       expect(showing.id).toBe(testShowtime.id);
-      expect(showing.film).toBe(testFilms[0]);
+      expect(showing.film.id).toBe(testFilms[0].id);
+      expect(showing.film.title).toBe(testFilms[0].title.text);
       expect(showing.date).toStrictEqual(parse(testShowtime.schedule.businessDate, "yyyy-MM-dd", new Date()));
     });
     test("should throw error if unable to find film name for film in Showtimes object", () => {
@@ -44,10 +45,10 @@ describe("SimpleShowing", () => {
   describe("toRecord", () => {
     test("should convert showing to film record for persistance", () => {
       const todaysDate = new Date();
-      const showing = new SimpleShowing("123", testFilms[0], todaysDate);
+      const showing = new SimpleShowing("123", testFilms[0].id, testFilms[0].title.text, todaysDate);
       const filmRecord = showing.toRecord();
-      expect(filmRecord.id).toBe("123");
-      expect(filmRecord.name).toBe("random film name");
+      expect(filmRecord.id).toBe("randomFilmId");
+      expect(filmRecord.title).toBe("random film name");
       expect(filmRecord.earliestShowing).toBe(todaysDate.getTime());
     });
   });

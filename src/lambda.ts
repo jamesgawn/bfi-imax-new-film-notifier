@@ -25,6 +25,9 @@ export const handler = async ()
     lookForwardDays = Number.parseInt(process.env.film_look_forward_days);
   }
   const upcomingFilms = await cis.getNextShowingByFilmForCinema(150, new Date(), lookForwardDays);
+  log.info("Retrieved upcoming films", {
+    upcomingFilms: upcomingFilms
+  });
   for (const [filmId, showing] of upcomingFilms) {
     const persistedFilm = await dbh.getRecordById<FilmRecord>(filmId);
     // If not previously seen, then do things
@@ -33,7 +36,7 @@ export const handler = async ()
       await dbh.putRecord<FilmRecord>(showing.toRecord());
       // Tweet to let people know it's available for booking
       // eslint-disable-next-line max-len
-      const newFilmTweet = `${showing.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
+      const newFilmTweet = `${showing.film.title} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
       if (process.env.twitter_enabled == "true") {
         log.info("Tweeting new film alert", {
           tweet: newFilmTweet
