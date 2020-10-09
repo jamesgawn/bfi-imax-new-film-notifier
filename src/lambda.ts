@@ -42,7 +42,7 @@ export const handler : APIGatewayProxyHandlerV2<void> = async (event, context)
       // Tweet to let people know it's available for booking
       // eslint-disable-next-line max-len
       const newFilmTweet = `${showing.film.title} starts showing on ${format(showing.date, "do MMM")}!
-      For booking see: https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
+For booking see: https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
       if (process.env.twitter_enabled == "true") {
         log.info("Tweeting new film alert", {
           tweet: newFilmTweet

@@ -65,7 +65,7 @@ describe("lambda.ts", () => {
     expect(mockPutRecord).toBeCalledWith(showing2.toRecord());
     expect(mockPost).toBeCalledWith("statuses/update", {
       status: `${showing2.film.title} starts showing on ${format(showing2.date, "do MMM")}!
-      For booking see: https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
+For booking see: https://beta.odeon.co.uk/films/film/${showing2.film.id}/?cinema=150`
     });
     expect(mockPost).toHaveBeenCalledTimes(1);
   });
