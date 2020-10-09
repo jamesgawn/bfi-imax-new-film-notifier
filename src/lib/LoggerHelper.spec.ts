@@ -25,11 +25,16 @@ describe("LoggerHelper", () => {
   });
   describe("constructor", () => {
     test("should create logger with specified name", () => {
+      LoggerHelper.additionalFields = {
+        extra: "other things"
+      };
+      mockedBunyan.createLogger.mockClear();
+      log = new LoggerHelper(name);
       expect(mockedBunyan.createLogger).toBeCalledWith({
         name: "bfi-imax-new-film-notifier",
         child: name,
         src: true,
-        extra: "things"
+        extra: "other things"
       });
     });
   });
