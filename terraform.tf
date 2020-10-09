@@ -34,6 +34,10 @@ variable "film_look_forward_days" {
   default = 7
 }
 
+variable "notification_sns_queue_name" {
+  type = string
+}
+
 provider "aws" {
   region = var.region
   profile = var.profile
@@ -55,6 +59,7 @@ data "archive_file" "lambda_code" {
 
 resource "aws_lambda_function" "lambda" {
   function_name = "bfi-imax-new-film-notifier"
+  description = "A lambda function to check if there are any new films available for booking at the BFI imax"
 
   handler = "lambda.handler"
   runtime = "nodejs12.x"
@@ -136,4 +141,42 @@ resource "aws_dynamodb_table" "film_showing_records" {
     name = "id"
     type = "S"
   }
+}
+
+resource "aws_cloudwatch_event_rule" "scheduled_event_rule" {
+  name = "bfi-imax-new-film-notifier-trigger-rule"
+  schedule_expression = "rate(15 minutes)"
+  description = "A rule to regularly trigger the bfi imax new film notifier lambda."
+}
+
+resource "aws_cloudwatch_event_target" "scheduled_event_target" {
+  arn = aws_lambda_function.lambda.arn
+  rule = aws_cloudwatch_event_rule.scheduled_event_rule.name
+}
+
+resource "aws_lambda_permission" "allow_clowdwatch_to_trigger_lambda" {
+  statement_id = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda.arn
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.scheduled_event_rule.arn
+}
+
+data "aws_sns_topic" "notification_alerts" {
+  name = var.notification_sns_queue_name
+}
+
+resource "aws_cloudwatch_metric_alarm" "monitoring_alarm" {
+  alarm_name = "bfi-imax-new-film-notifier-error-check"
+  alarm_description = "BFI IMAX New Film Notifier Checkers"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods = 2
+  namespace = "AWS/Lambda"
+  metric_name = "Errors"
+  statistic = "Average"
+  period = 1800
+  threshold = 1
+  treat_missing_data = "ignore"
+  alarm_actions = [data.aws_sns_topic.notification_alerts.arn]
+  ok_actions = [data.aws_sns_topic.notification_alerts.arn]
 }
