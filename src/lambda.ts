@@ -4,9 +4,13 @@ import {FilmRecord} from "./domain/FilmRecord";
 import Twitter from "twitter-lite";
 import {FriendlyError} from "./lib/FriendlyError";
 import {LoggerHelper} from "./lib/LoggerHelper";
+import {APIGatewayProxyHandlerV2} from "aws-lambda";
 
-export const handler = async ()
+export const handler : APIGatewayProxyHandlerV2<void> = async (event, context)
     : Promise<void> => {
+  LoggerHelper.additionalFields = {
+    awsRequestId: context.awsRequestId
+  };
   const log = new LoggerHelper("lambda.handler");
   const cis = new CinemaInfoService();
   const dbh = new DynamoDBHelper("bfi-film-showings");

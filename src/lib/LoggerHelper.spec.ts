@@ -12,6 +12,9 @@ describe("LoggerHelper", () => {
   const infoMock: jest.Mock<void> = jest.fn();
   const errorMock: jest.Mock<void> = jest.fn();
   beforeEach(() => {
+    LoggerHelper.additionalFields = {
+      extra: "things"
+    };
     log = new LoggerHelper(name);
     mockedBunyan.createLogger.mockReturnValue({
       info: infoMock,
@@ -25,7 +28,8 @@ describe("LoggerHelper", () => {
       expect(mockedBunyan.createLogger).toBeCalledWith({
         name: "bfi-imax-new-film-notifier",
         child: name,
-        src: true
+        src: true,
+        extra: "things"
       });
     });
   });

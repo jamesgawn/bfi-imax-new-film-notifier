@@ -55,7 +55,9 @@ describe("lambda.ts", () => {
     mockGetRecordById.mockResolvedValueOnce(undefined);
   });
   test("should successfully identify new films and process them", async () => {
-    await handler();
+    await handler({} as any, {
+      awsRequestId: "test"
+    } as any, {} as any);
     expect(mockGetNextShowingByFilmForCinema).toBeCalledWith(150, expect.any(Date), 2);
     expect(mockGetRecordById).toHaveBeenNthCalledWith(1, "film1");
     expect(mockGetRecordById).toHaveBeenNthCalledWith(2, "film2");
@@ -68,12 +70,16 @@ describe("lambda.ts", () => {
   });
   test("should successfully identify new films and process them for a customised number of days", async () => {
     process.env.film_look_forward_days = "1";
-    await handler();
+    await handler({} as any, {
+      awsRequestId: "test"
+    } as any, {} as any);
     expect(mockGetNextShowingByFilmForCinema).toBeCalledWith(150, expect.any(Date), 1);
   });
   test("should successfully identify new films process but not send tweet if disabled", async () => {
     process.env.twitter_enabled = "false";
-    await handler();
+    await handler({} as any, {
+      awsRequestId: "test"
+    } as any, {} as any);
     expect(mockGetRecordById).toHaveBeenNthCalledWith(1, "film1");
     expect(mockGetRecordById).toHaveBeenNthCalledWith(2, "film2");
     expect(mockPutRecord).toHaveBeenCalledTimes(1);
@@ -84,7 +90,9 @@ describe("lambda.ts", () => {
     delete process.env.twitter_access_token_secret;
     let error = new FriendlyError("blarg");
     try {
-      await handler();
+      await handler({} as any, {
+        awsRequestId: "test"
+      } as any, {} as any);
     } catch (err) {
       error = err;
     }
