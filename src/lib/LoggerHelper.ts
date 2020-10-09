@@ -11,15 +11,23 @@ export class LoggerHelper {
     });
   };
 
-  info(msg: string, data?: object) {
-    this.log.info(msg, {
-      data: data,
-    });
+  info(msg: string, data?: any) {
+    if (data) {
+      this.log.info({
+        data: data
+      }, msg);
+    } else {
+      this.log.info(msg);
+    }
   }
 
   error(msg: string, err?: Error, data?: any) {
-    this.log.error(err, msg, {
-      data: data
-    });
+    if (data) {
+      this.log.error(err, msg, {
+        data: data
+      });
+    } else {
+      this.log.error(err, msg);
+    }
   }
 }

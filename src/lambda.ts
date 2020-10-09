@@ -26,7 +26,7 @@ export const handler = async ()
   }
   const upcomingFilms = await cis.getNextShowingByFilmForCinema(150, new Date(), lookForwardDays);
   log.info("Retrieved upcoming films", {
-    upcomingFilms: upcomingFilms
+    upcomingFilms: Array.from(upcomingFilms.values())
   });
   for (const [filmId, showing] of upcomingFilms) {
     const persistedFilm = await dbh.getRecordById<FilmRecord>(filmId);
