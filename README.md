@@ -1,7 +1,7 @@
 # BFI IMAX New Film Notifier
 ![Node.js CI](https://github.com/jamesgawn/bfi-imax-new-film-notifier/workflows/Node.js%20CI/badge.svg?branch=master)
 
-A serverless solution to find out if new films are available for booking at the BFI IMAX.
+A serverless solution to automatically tweet when new films are available for booking at the BFI IMAX.
 
 You can see the feed at on twitter [@bfiimaxnewfilms](https://twitter.com/bfiimaxnewfilms).
 ## Guide
