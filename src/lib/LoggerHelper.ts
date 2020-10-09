@@ -2,7 +2,7 @@ import bunyan from "bunyan";
 import Logger from "bunyan";
 
 export class LoggerHelper {
-  static additionalFields : object = {};
+  static additionalFields = {};
   log: Logger;
   constructor(name: string) {
     this.log = bunyan.createLogger({
