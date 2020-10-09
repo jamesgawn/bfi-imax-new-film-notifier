@@ -17,7 +17,7 @@ export class LoggerHelper {
     }, msg);
   }
 
-  error(msg: string, err: Error, data?: any) {
+  error(msg: string, err?: Error, data?: any) {
     this.log.error(err, msg, {
       data: data
     });

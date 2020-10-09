@@ -3,12 +3,15 @@ import {DynamoDBHelper} from "./lib/DynamoDBHelper";
 import {FilmRecord} from "./domain/FilmRecord";
 import Twitter from "twitter-lite";
 import {FriendlyError} from "./lib/FriendlyError";
+import {LoggerHelper} from "./lib/LoggerHelper";
 
 export const handler = async ()
     : Promise<void> => {
+  const log = new LoggerHelper("lambda.handler");
   const cis = new CinemaInfoService();
   const dbh = new DynamoDBHelper("bfi-film-showings");
   if (!process.env.twitter_consumer_key || !process.env.twitter_consumer_secret || !process.env.twitter_access_token_key || !process.env.twitter_access_token_secret) {
+    log.error("Twitter credentials not set in env vars, unable to proceed.");
     throw new FriendlyError("Twitter credentials not set in env vars, unable to proceed.");
   }
   const twitter = new Twitter({
@@ -29,13 +32,19 @@ export const handler = async ()
       // Store the film has been identified
       await dbh.putRecord<FilmRecord>(showing.toRecord());
       // Tweet to let people know it's available for booking
+      // eslint-disable-next-line max-len
+      const newFilmTweet = `${showing.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`;
       if (process.env.twitter_enabled == "true") {
+        log.info("Tweeting new film alert", {
+          tweet: newFilmTweet
+        });
         await twitter.post("statuses/update", {
-          status: `${showing.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`
+          status: newFilmTweet
         });
       } else {
-        console.log("Not tweeted, but here's the message.");
-        console.log(`${showing.film.title.text} is now available for booking! For more details go to https://beta.odeon.co.uk/films/film/${showing.film.id}/?cinema=150`);
+        log.info("Not tweeted, but here's the message.", {
+          tweet: newFilmTweet
+        });
       }
     }
   }
