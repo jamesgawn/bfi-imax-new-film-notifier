@@ -49,6 +49,8 @@ export const handler = async ()
           tweet: newFilmTweet
         });
       }
+    } else {
+      log.info(`Found existing film entry for ${showing.film.id} - ${showing.film.title}. No action taken.`);
     }
   }
 };
