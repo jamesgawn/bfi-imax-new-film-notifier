@@ -179,7 +179,7 @@ resource "aws_cloudwatch_metric_alarm" "monitoring_alarm" {
   alarm_name = "bfi-imax-new-film-notifier-error-check"
   alarm_description = "BFI IMAX New Film Notifier Checkers"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods = 1
+  evaluation_periods = 2
   namespace = "AWS/Lambda"
   metric_name = "Errors"
   statistic = "Sum"
