@@ -13,19 +13,19 @@ export class BearerTokenHelper {
     // Get the page, if not throw an error
     let response : AxiosResponse<string>;
     try {
-      response = await axios.get<string>("https://beta.odeon.co.uk/cinemas/bfi-imax/#", {
+      response = await axios.get<string>("https://www.odeon.co.uk/cinemas/bfi-imax/#", {
         headers: {
           "User-Agent": OdeonApi.userAgent
         }
       });
     } catch (err) {
-      throw new FriendlyError("Unable to retrieve page contents from https://beta.odeon.co.uk/cinemas/bfi-imax/#.", err);
+      throw new FriendlyError("Unable to retrieve page contents from https://www.odeon.co.uk/cinemas/bfi-imax/#.", err);
     }
 
     if (response.data) {
       return response.data;
     } else {
-      throw new FriendlyError("No page data returned from https://beta.odeon.co.uk/cinemas/bfi-imax/#.");
+      throw new FriendlyError("No page data returned from https://www.odeon.co.uk/cinemas/bfi-imax/#.");
     }
   }
 

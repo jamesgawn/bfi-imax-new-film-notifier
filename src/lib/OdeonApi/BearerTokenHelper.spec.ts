@@ -23,7 +23,7 @@ describe("BearerTokenHelper.ts", () => {
     test("should return the auth JWT with valid page retrieved successfully", async () => {
       const authJwt = await BearerTokenHelper.getAuthJwt();
       expect(authJwt).toBe("eyJhbGciOiJSUB1QifQ.eyJzdWIiOiJx-WtjOHo5eGJiZzF0YTN");
-      expect(mockedAxios.get).toBeCalledWith("https://beta.odeon.co.uk/cinemas/bfi-imax/#", {
+      expect(mockedAxios.get).toBeCalledWith("https://www.odeon.co.uk/cinemas/bfi-imax/#", {
         headers: {
           "User-Agent": OdeonApi.userAgent
         }
@@ -38,7 +38,7 @@ describe("BearerTokenHelper.ts", () => {
       } catch (err) {
         error = err;
       }
-      expect(error.message).toBe("Unable to retrieve page contents from https://beta.odeon.co.uk/cinemas/bfi-imax/#.");
+      expect(error.message).toBe("Unable to retrieve page contents from https://www.odeon.co.uk/cinemas/bfi-imax/#.");
       expect(error.err).toBe(mockedError);
     });
     test("should return throw an error if able to return successfully, but there's not content", async () => {
@@ -49,7 +49,7 @@ describe("BearerTokenHelper.ts", () => {
       } catch (err) {
         error = err;
       }
-      expect(error.message).toBe("No page data returned from https://beta.odeon.co.uk/cinemas/bfi-imax/#.");
+      expect(error.message).toBe("No page data returned from https://www.odeon.co.uk/cinemas/bfi-imax/#.");
     });
   });
   describe("findLineContainingJwt", () => {
