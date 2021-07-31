@@ -4,8 +4,6 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-env:
-  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 jobs:
   unit-test:
     name: Unit Test Check
@@ -14,9 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup node
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: '12.x'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: "@jamesgawn"
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -24,8 +27,11 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
+      - run: npm install --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: NPM Post Install
+        run: npm rebuild && npm run prepare --if-present
       - name: Run Unit Tests
         run: npm test
         env:
@@ -37,9 +43,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup node
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -47,8 +54,11 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
+      - run: npm install --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: NPM Post Install
+        run: npm rebuild && npm run prepare --if-present
       - name: Run Lint Test
         run: npm run lint
         env:
@@ -60,9 +70,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -70,8 +81,11 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
+      - run: npm install --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: NPM Post Install
+        run: npm rebuild && npm run prepare --if-present
       - name: Run Coverage Test
         run: npm run coverage
         env:
@@ -83,9 +97,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -93,8 +108,11 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
+      - run: npm install --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: NPM Post Install
+        run: npm rebuild && npm run prepare --if-present
       - name: Run Coverage Test
         run: npm run build
         env:
