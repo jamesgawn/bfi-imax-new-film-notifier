@@ -28,7 +28,8 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - run: npm install --ignore-scripts
+      - name: NPM Install
+        run: npm install --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NPM Post Install
@@ -55,7 +56,8 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - run: npm install --ignore-scripts
+      - name: NPM Install
+        run: npm install --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NPM Post Install
@@ -82,7 +84,8 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - run: npm install --ignore-scripts
+      - name: NPM Install
+        run: npm install --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NPM Post Install
@@ -109,7 +112,8 @@ jobs:
           key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-npm-
-      - run: npm install --ignore-scripts
+      - name: NPM Install
+        run: npm install --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NPM Post Install
