@@ -1,6 +1,6 @@
 {
   "name": "bfi-imax-new-film-notifier",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A serverless solution to find out if new films are available for booking at the BFI IMAX.",
   "main": "./dist/lambda.js",
   "scripts": {
