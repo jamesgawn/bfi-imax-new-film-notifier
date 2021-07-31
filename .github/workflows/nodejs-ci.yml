@@ -44,11 +44,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup node
-      - uses: actions/setup-node@v2
+      - name: Setup Node (NPMJS)
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+      - name: Setup Node (Github Packages)
+        uses: actions/setup-node@v2
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
+          scope: "@jamesgawn"
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -72,11 +77,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node
-      - uses: actions/setup-node@v2
+      - name: Setup Node (NPMJS)
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+      - name: Setup Node (Github Packages)
+        uses: actions/setup-node@v2
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
+          scope: "@jamesgawn"
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -100,11 +110,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node
-      - uses: actions/setup-node@v2
+      - name: Setup Node (NPMJS)
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+      - name: Setup Node (Github Packages)
+        uses: actions/setup-node@v2
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
+          scope: "@jamesgawn"
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
