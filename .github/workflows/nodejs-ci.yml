@@ -133,7 +133,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NPM Post Install
         run: npm rebuild && npm run prepare --if-present
-      - name: Run Coverage Test
-        run: npm run build
+      - name: Run Build (Build)
+        run: tsc
+      - name: Run Build (Install)
+        run: cp package.json ./dist/package.json && npm install --production --ignore-scripts --prefix ./dist/
         env:
-          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Build (Post Install)
+        run: npm rebuild --prefix ./dist && npm run prepare --if-present --prefix

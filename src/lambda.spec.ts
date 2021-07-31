@@ -9,17 +9,17 @@ jest.mock("@jamesgawn/new-film-notifier", () => ({
 
 describe("lambda.ts", () => {
   beforeEach(() => {
-    process.env.dry_run = "false";
     process.env.dynamodb_table_name = "dynamodb_table_name";
     process.env.twitter_consumer_key = "consumer_key";
     process.env.twitter_consumer_secret = "consumer_secret";
     process.env.twitter_access_token_key = "access_token_key";
     process.env.twitter_access_token_secret = "access_token_secret";
-    process.env.twitter_access_token_secret = "false";
-    process.env.film_look_forward_days = "2";
+    process.env.film_look_forward_days = "1";
     mockCheck.mockReset();
   });
   test("should successfully identify new films and process them", async () => {
+    delete process.env.film_look_forward_days;
+    process.env.dry_run = "asda";
     await handler({} as any, {
       awsRequestId: "test"
     } as any, {} as any);
@@ -90,6 +90,6 @@ describe("lambda.ts", () => {
     await handler({} as any, {
       awsRequestId: "test"
     } as any, {} as any);
-    expect(mockCheck).toBeCalledWith(150, 2, true);
+    expect(mockCheck).toBeCalledWith(150, 1, true);
   });
 });
