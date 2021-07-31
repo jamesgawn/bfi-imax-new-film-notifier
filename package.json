@@ -28,27 +28,28 @@
   },
   "homepage": "https://github.com/jamesgawn/bfi-imax-new-film-notifier#readme",
   "dependencies": {
+    "@jamesgawn/new-film-notifier": "^1.0.9",
     "axios": "^0.21.1",
     "bunyan": "^1.8.14",
     "date-fns": "^2.16.1",
     "twitter-lite": "^0.14.0"
   },
   "devDependencies": {
-    "@types/bunyan": "^1.8.6",
-    "@typescript-eslint/eslint-plugin": "^4.3.0",
-    "@typescript-eslint/parser": "^4.3.0",
     "@types/aws-lambda": "^8.10.63",
+    "@types/bunyan": "^1.8.6",
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.2",
-    "aws-sdk": "^2.769.0",
-    "typescript": "^4.0.3",
-    "jest": "^26.4.2",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^26.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "aws-sdk": "^2.958.0",
     "eslint": "^7.10.0",
+    "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-config-google": "^0.14.0"
+    "jest": "^26.4.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   }
 }

@@ -24,7 +24,7 @@ variable "twitter_access_token_secret" {
   type = string
 }
 
-variable "twitter_enabled" {
+variable "dry_run" {
   type = bool
   default = false
   description = "Is automatic posting to twitter enabled?"
@@ -79,12 +79,13 @@ resource "aws_lambda_function" "lambda" {
 
   environment {
     variables = {
-      twitter_enabled = var.twitter_enabled
+      dry_run = var.dry_run
       twitter_consumer_key = var.twitter_consumer_key
       twitter_consumer_secret = var.twitter_consumer_secret
       twitter_access_token_key = var.twitter_access_token_key
       twitter_access_token_secret = var.twitter_access_token_secret
       film_look_forward_days = var.film_look_forward_days
+      dynamodb_table_name = aws_dynamodb_table.film_showing_records.name
     }
   }
 
