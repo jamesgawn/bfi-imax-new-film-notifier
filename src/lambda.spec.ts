@@ -5,9 +5,11 @@ import {add, format} from "date-fns";
 import {FriendlyError} from "./lib/FriendlyError";
 
 const mockGetNextShowingByFilmForCinema = jest.fn();
+const mockInitialise = jest.fn();
 jest.mock("./service/CinemaInfoService", () => ({
   CinemaInfoService: jest.fn().mockImplementation(() => ({
-    getNextShowingByFilmForCinema: mockGetNextShowingByFilmForCinema
+    getNextShowingByFilmForCinema: mockGetNextShowingByFilmForCinema,
+    initialise: mockInitialise
   }))
 }));
 const mockGetRecordById = jest.fn();

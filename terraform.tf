@@ -72,8 +72,8 @@ resource "aws_lambda_function" "lambda" {
 
   handler = "lambda.handler"
   runtime = "nodejs12.x"
-  filename = "dist-lambda.zip"
-  source_code_hash = data.archive_file.lambda_code.output_sha
+  filename = data.archive_file.lambda_code.output_path
+  source_code_hash = filebase64sha256(data.archive_file.lambda_code.output_path)
   memory_size = 192
   timeout = 10
 

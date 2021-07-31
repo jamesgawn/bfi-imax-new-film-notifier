@@ -10,6 +10,10 @@ export class CinemaInfoService extends Base {
     this.api = new OdeonApi();
   }
 
+  async initialise() {
+    await this.api.initialise();
+  }
+
   async getNextShowingByFilmForCinema(siteId: number, startDate: Date, lookForwardDays: number) {
     const dates = eachDayOfInterval({start: startDate, end: add(startDate, {days: lookForwardDays})});
     this.log.info(`Obtaining showtimes for cinema ${siteId} for the next ${lookForwardDays} days`, {

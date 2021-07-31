@@ -10,6 +10,7 @@ const mockedBearerTokenHelper: jest.Mocked<typeof BearerTokenHelper> = BearerTok
 
 describe("OdeonApi", () => {
   beforeEach(() => {
+    mockedBearerTokenHelper.getAuthJwt.mockReset();
     mockedBearerTokenHelper.getAuthJwt.mockResolvedValue("supertoken");
     mockedAxios.get.mockReset();
   });
@@ -19,6 +20,7 @@ describe("OdeonApi", () => {
         data: "piles of stuff"
       });
       const oapi = new OdeonApi();
+      await oapi.initialise();
       const filmData = await oapi.getAllFilmsForCinema(150);
       expect(filmData).toBe("piles of stuff");
       expect(mockedAxios.get).toBeCalledWith("https://vwc.odeon.co.uk/WSVistaWebClient/ocapi/v1/browsing/master-data/films?siteIds=150", {
@@ -27,6 +29,7 @@ describe("OdeonApi", () => {
           "User-Agent": OdeonApi.userAgent
         }
       });
+      expect(mockedBearerTokenHelper.getAuthJwt).toBeCalledTimes(1);
     });
     test("should only attempt to retrieve an authentication token once if multiple calls are made", async () => {
       mockedAxios.get.mockResolvedValue({

@@ -4,9 +4,11 @@ import {SimpleShowing} from "./domain/SimpleShowing";
 import {Film} from "../lib/OdeonApi/odeonTypes";
 
 const mockGetShowtimesForCinema = jest.fn();
+const mockInitialise = jest.fn();
 jest.mock("../lib/OdeonApi", () => ({
   OdeonApi: jest.fn().mockImplementation(() => ({
-    getShowtimesForCinema: mockGetShowtimesForCinema
+    getShowtimesForCinema: mockGetShowtimesForCinema,
+    initialise: mockInitialise
   }))
 }));
 
@@ -37,8 +39,9 @@ describe("CinemaInfoService.ts", () => {
   const startDate = parse("2019-01-01", "yyyy-MM-dd", new Date());
   const startDatePlusOne = parse("2019-01-02", "yyyy-MM-dd", new Date());
   const startDatePlusTwo = parse("2019-01-03", "yyyy-MM-dd", new Date());
-  beforeEach(() => {
+  beforeEach(async () => {
     cis = new CinemaInfoService();
+    await cis.initialise();
     mockGetShowtimesForCinema.mockReset();
   });
   describe("getNextShowingByFilmForCinema", () => {
@@ -59,10 +62,12 @@ describe("CinemaInfoService.ts", () => {
       mockGetShowtimesForCinema.mockResolvedValueOnce(testData);
       mockGetShowtimesForCinema.mockResolvedValueOnce(emptyShowtimes);
 
+
       const result = await cis.getNextShowingByFilmForCinema(150, startDate, 2);
       expect(mockGetShowtimesForCinema).nthCalledWith(1, 150, startDate);
       expect(mockGetShowtimesForCinema).nthCalledWith(2, 150, startDatePlusOne);
       expect(mockGetShowtimesForCinema).nthCalledWith(3, 150, startDatePlusTwo);
+      expect(mockInitialise).toBeCalledTimes(1);
       expect(result).toStrictEqual(new Map([
         ["filmid1", new SimpleShowing("123-123", film1.id, film1.title.text, startDatePlusOne)]
       ]));

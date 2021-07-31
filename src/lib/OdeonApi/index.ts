@@ -12,9 +12,14 @@ export class OdeonApi extends Base {
     super();
   }
 
+  async initialise() {
+    this.log.info("Obtaining Jwt");
+    this.token = await BearerTokenHelper.getAuthJwt();
+  }
+
   private async makeApiCall<T>(url :string, config?: AxiosRequestConfig) {
     if (!this.token) {
-      this.token = await BearerTokenHelper.getAuthJwt();
+      throw new Error("Odean API Not Initialised");
     }
     this.log.info(`Making API Call to ${url}`);
     const result = await axios.get<T>(url, {

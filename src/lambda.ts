@@ -13,6 +13,7 @@ export const handler : APIGatewayProxyHandlerV2<void> = async (event, context) =
   };
   const log = new LoggerHelper("lambda.handler");
   const cis = new CinemaInfoService();
+  await cis.initialise();
   const dbh = new DynamoDBHelper("bfi-film-showings");
   if (!process.env.twitter_consumer_key || !process.env.twitter_consumer_secret || !process.env.twitter_access_token_key || !process.env.twitter_access_token_secret) {
     log.error("Twitter credentials not set in env vars, unable to proceed.");
