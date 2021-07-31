@@ -4,6 +4,5 @@ import * as lambda from "./lambda";
   try {
     await lambda.execute();
   } catch (e) {
-    // Deal with the fact the chain failed
   }
 })();
