@@ -31,7 +31,7 @@ module.exports = {
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
     "/node_modules/",
-    "/src/App.ts",
+    "/src/main.ts",
     "/src/test/*",
     "testdata/*"
   ],
