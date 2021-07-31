@@ -140,4 +140,4 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Build (Post Install)
-        run: npm rebuild --prefix ./dist && npm run prepare --if-present --prefix
+        run: npm rebuild --prefix ./dist/ && npm run prepare --if-present --prefix ./dist/
