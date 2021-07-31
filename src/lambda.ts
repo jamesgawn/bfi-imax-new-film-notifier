@@ -3,6 +3,10 @@ import bunyan from "bunyan";
 import {APIGatewayProxyHandlerV2} from "aws-lambda";
 
 export const handler : APIGatewayProxyHandlerV2<void> = async () => {
+  await execute();
+};
+
+export const execute = async () => {
   const log = bunyan.createLogger({
     name: "bfi-imax-new-film-notifier-lambda",
     child: "lambda",
